@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}LungAI – Results{% endblock %}
+
+{% block style %}
+<style>
+  .grid2 { display: grid; grid-template-columns: 98fr 93.5fr; gap: 1.25rem; margin-top: 1.25rem; }
+  .acc { text-align: center; padding: 1.25rem; border-radius: 10px; margin-bottom: 1rem; }
+  .acc.lr { background: #eff6ff; }
+  .acc.dt { background: #f0fdf4; }
+  .acc-n { font-size: 2.75rem; font-weight: 800; }
+  .acc-n.lr { color: #1e3a8a; }
+  .acc-n.dt { color: #16a34a; }
+  .acc-l { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mrow { display: flex; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.875rem; }
+  .mrow:last-child { border: none; }
+  .mval { font-weight: 700; font-family: monospace; }
+  .mval.lr { color: #1e3a8a; }
+  .mval.dt { color: #16a34a; }
+  .brow { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+  .blbl { width: 70px; font-size: 0.75rem; color: #64748b; text-align: right; }
+  .btrack { flex: 1; background: #f1f5f9; border-radius: 999px; height: 14px; overflow: hidden; }
+  .bfill { height: 100%; border-radius: 999px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.7rem; font-weight: 700; color: white; }
+  .bfill.lr { background: #1e3a8a; }
+  .bfill.dt { background: #16a34a; }
+  .slbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: #94a3b8; margin: 1rem 0 0.6rem; font-weight: 600; }
+  .cm { width: 100%; text-align: center; border-collapse: collapse; font-size: 0.8rem; }
+  .cm th { padding: 0.4rem; color: #64748b; font-weight: 600; }
+  .cm td { padding: 0.5rem; border-radius: 4px; font-weight: 700; }
+  .tp, .tn { background: #f0fdf4; color: #166534; }
+  .fp, .fn { background: #fff5f5; color: #991b1b; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:0.25rem;"> Model Performance</h1>
+  <p style="color:#64748b;font-size:0.875rem;">Evaluated on 200 test samples (20% of dataset)</p>
+
+  <div class="grid2">
+    <!-- Logistic Regression -->
+    <div class="card" style="margin-bottom:0">
+      <h2> Logistic Regression</h2>
+      <div class="acc-n lr">{% widthratio lr.accuracy 1 100 %}%</div>
+      <div class="mrow"><span>Accuracy</span><span class="mval lr">{{ lr.accuracy }}</span></div>
+      <div class="mrow"><span>Precision</span><span class="mval lr">{{ lr.precision }}</span></div>
+      <div class="mrow"><span>Recall</span><span class="mval lr">{{ lr.recall }}</span></div>
+      <div class="mrow"><span>F1-Score</span><span class="mval lr">{{ lr.f1 }}</span></div>
+      <div class="mrow"><span>CV Mean (5-fold)</span><span class="mval lr">{{ lr.cv_mean }}</span></div>
+      <div class="slbl">Metric Bars</div>
+      <div class="brow"><div class="blbl">Accuracy</div><div class="btrack"><div class="bfill lr" style="width:{% widthratio lr.accuracy 1 100 %}%">{{ lr.accuracy }}</div></div></div>
+      <div class="brow"><div class="blbl">Precision</div><div class="btrack"><div class="bfill lr" style="width:{% widthratio lr.precision 1 100 %}%">{{ lr.precision }}</div></div></div>
+      <div class="brow"><div class="blbl">Recall</div><div class="btrack"><div class="bfill lr" style="width:{% widthratio lr.recall 1 100 %}%">{{ lr.recall }}</div></div></div>
+      <div class="brow"><div class="blbl">F1</div><div class="btrack"><div class="bfill lr" style="width:{% widthratio lr.f1 1 100 %}%">{{ lr.f1 }}</div></div></div>
+      <div class="slbl">Confusion Matrix</div>
+      <table class="cm">
+        <tr><th></th><th>Pred: No</th><th>Pred: Yes</th></tr>
+        <tr><td style="color:#64748b;text-align:left">Actual: No</td><td class="tn">{{ lr.confusion_matrix.0.0 }} ✓</td><td class="fp">{{ lr.confusion_matrix.0.1 }} ✗</td></tr>
+        <tr><td style="color:#64748b;text-align:left">Actual: Yes</td><td class="fn">{{ lr.confusion_matrix.1.0 }} ✗</td><td class="tp">{{ lr.confusion_matrix.1.1 }} ✓</td></tr>
+      </table>
+    </div>
+
+    <!-- Decision Tree -->
+    <div class="card" style="margin-bottom:0">
+      <h2> Decision Tree</h2>
+      <div class="acc-n dt">{% widthratio dt.accuracy 1 100 %}%</div>
+      <div class="mrow"><span>Accuracy</span><span class="mval dt">{{ dt.accuracy }}</span></div>
+      <div class="mrow"><span>Precision</span><span class="mval dt">{{ dt.precision }}</span></div>
+      <div class="mrow"><span>Recall</span><span class="mval dt">{{ dt.recall }}</span></div>
+      <div class="mrow"><span>F1-Score</span><span class="mval dt">{{ dt.f1 }}</span></div>
+      <div class="mrow"><span>CV Mean (5-fold)</span><span class="mval dt">{{ dt.cv_mean }}</span></div>
+      <div class="slbl">Metric Bars</div>
+      <div class="brow"><div class="blbl">Accuracy</div><div class="btrack"><div class="bfill dt" style="width:{% widthratio dt.accuracy 1 100 %}%">{{ dt.accuracy }}</div></div></div>
+      <div class="brow"><div class="blbl">Precision</div><div class="btrack"><div class="bfill dt" style="width:{% widthratio dt.precision 1 100 %}%">{{ dt.precision }}</div></div></div>
+      <div class="brow"><div class="blbl">Recall</div><div class="btrack"><div class="bfill dt" style="width:{% widthratio dt.recall 1 100 %}%">{{ dt.recall }}</div></div></div>
+      <div class="brow"><div class="blbl">F1</div><div class="btrack"><div class="bfill dt" style="width:{% widthratio dt.f1 1 100 %}%">{{ dt.f1 }}</div></div></div>
+      <div class="slbl">Confusion Matrix</div>
+      <table class="cm">
+        <tr><th></th><th>Pred: No</th><th>Pred: Yes</th></tr>
+        <tr><td style="color:#64748b;text-align:left">Actual: No</td><td class="tn">{{ dt.confusion_matrix.0.0 }} ✓</td><td class="fp">{{ dt.confusion_matrix.0.1 }} ✗</td></tr>
+        <tr><td style="color:#64748b;text-align:left">Actual: Yes</td><td class="fn">{{ dt.confusion_matrix.1.0 }} ✗</td><td class="tp">{{ dt.confusion_matrix.1.1 }} ✓</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2> Summary</h2>
+    <p style="font-size:0.875rem;color:#475569;line-height:1.7">
+      <strong>Logistic Regression</strong> performs better with {{ lr.accuracy }} accuracy and perfect recall — it missed zero actual cancer cases. It is the primary model used in this system.<br/><br/>
+      <strong>Decision Tree</strong> achieves {{ dt.accuracy }} accuracy. Its advantage is interpretability — the model's decisions follow clear rules that can be drawn as a tree, making it easy to explain <em>why</em> a prediction was made.
+    </p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}LungAI – Home{% endblock %}
+
+{% block style %}
+<style>
+  .hero { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; text-align: center; padding: 3.5rem 1rem; }
+  .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.75rem; }
+  .hero p { opacity: 0.85; margin-bottom: 1.75rem; }
+  .hero a { background: white; color: #1e3a8a; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; }
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); background: white; border-bottom: 1px solid #e2e8f0; text-align: center; }
+  .stat { padding: 1.25rem; border-right: 1px solid #e2e8f0; }
+  .stat:last-child { border: none; }
+  .stat-n { font-size: 1.75rem; font-weight: 800; color: #1e3a8a; }
+  .stat-l { font-size: 0.75rem; color: #64748b; margin-top: 0.2rem; }
+  .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 2rem; }
+  .feat { background: white; border-radius: 10px; padding: 1.25rem; border: 1px solid #e2e8f0; }
+  .feat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .feat h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.35rem; }
+  .feat p { font-size: 0.8rem; color: #64748b; line-height: 1.5; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+  <h1> Lung Disease Detection System</h1>
+  <p>AI-powered risk prediction using Logistic Regression & Decision Tree — Final Year Project</p>
+  <a href="/predict/">Start Prediction →</a>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-n">90%</div><div class="stat-l">LR Accuracy</div></div>
+  <div class="stat"><div class="stat-n">87%</div><div class="stat-l">DT Accuracy</div></div>
+  <div class="stat"><div class="stat-n">15</div><div class="stat-l">Features Used</div></div>
+  <div class="stat"><div class="stat-n">2</div><div class="stat-l">ML Models</div></div>
+</div>
+
+<div class="container">
+  <div class="features">
+    <div class="feat"><div class="feat-icon"></div><h3>Two ML Models</h3><p>Logistic Regression and Decision Tree trained on Kaggle data. Both give predictions with probability scores.</p></div>
+    <div class="feat"><div class="feat-icon"></div><h3>15 Health Features</h3><p>Age, smoking, coughing, chest pain, shortness of breath and more — all analysed together.</p></div>
+    <div class="feat"><div class="feat-icon"></div><h3>Full Evaluation</h3><p>Accuracy, precision, recall, F1-score, and confusion matrix results clearly shown.</p></div>
+    <div class="feat"><div class="feat-icon"></div><h3>Django Web App</h3><p>User fills the form, clicks predict, and sees instant results from both models.</p></div>
+    <div class="feat"><div class="feat-icon"></div><h3>Ethical Design</h3><p>Uses anonymised public data. Not a medical diagnosis. For research purposes only.</p></div>
+    <div class="feat"><div class="feat-icon"></div><h3>FYP — 6WCM0029</h3><p>ML integrated into a healthcare web app for a Computer Science final year project.</p></div>
+  </div>
+</div>
+{% endblock %}

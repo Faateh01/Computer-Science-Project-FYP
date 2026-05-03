@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block title %}LungAI – Predict{% endblock %}
+
+{% block style %}
+<style>
+  .layout { display: grid; grid-template-columns: 1fr 320px; gap: 1.25rem; margin-top: 1.25rem; }
+  .section-lbl { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin: 1.25rem 0 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid #f1f5f9; }
+  .section-lbl:first-child { margin-top: 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .field label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; color: #334155; }
+  .field select, .field input { width: 100%; padding: 0.5rem 0.75rem; border: 1.5px solid #e2e8f0; border-radius: 7px; font-size: 0.875rem; background: #f8fafc; font-family: inherit; }
+  .field select:focus, .field input:focus { outline: none; border-color: #2563eb; background: white; }
+  .predict-btn { width: 100%; margin-top: 1.25rem; padding: 0.85rem; background: #1e3a8a; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .predict-btn:hover { background: #1e40af; }
+  .result-panel { position: sticky; top: 68px; }
+  .empty-state { text-align: center; padding: 2.5rem 1rem; color: #94a3b8; font-size: 0.85rem; }
+  .spin { display: none; text-align: center; padding: 2rem; }
+  .spin-ring { width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: sp 0.8s linear infinite; margin: 0 auto 0.75rem; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  .mblock { border-radius: 9px; padding: 1rem; margin-bottom: 0.75rem; border: 1.5px solid #e2e8f0; }
+  .mblock.high { border-color: #dc2626; background: #fff5f5; }
+  .mblock.low  { border-color: #16a34a; background: #f0fdf4; }
+  .mtop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .mname { font-size: 0.85rem; font-weight: 700; }
+  .pill { padding: 0.2rem 0.7rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+  .pill.high { background: #dc2626; color: white; }
+  .pill.low  { background: #16a34a; color: white; }
+  .plbl { display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748b; margin-bottom: 0.3rem; }
+  .prog { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 999px; transition: width 1s ease; }
+  .prog-fill.high { background: #dc2626; }
+  .prog-fill.low  { background: #16a34a; }
+  .consensus { text-align: center; padding: 0.9rem; border-radius: 9px; font-weight: 700; font-size: 0.95rem; margin-top: 0.25rem; }
+  .consensus.high { background: #dc2626; color: white; }
+  .consensus.low  { background: #16a34a; color: white; }
+  .note { margin-top: 0.75rem; padding: 0.75rem; background: #fffbeb; border: 1px solid #fde68a; border-radius: 7px; font-size: 0.75rem; color: #92400e; line-height: 1.5; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:0.25rem;"> Predict Lung Disease Risk</h1>
+  <p style="color:#64748b;font-size:0.875rem;">Fill in the patient details and click Predict.</p>
+
+  <div class="layout">
+    <div class="card" style="margin-bottom:0">
+      <div class="section-lbl">Patient Demographics</div>
+      <div class="grid2">
+        <div class="field"><label>Age</label><input type="number" id="AGE" value="45" min="18" max="100"/></div>
+        <div class="field"><label>Gender</label><select id="GENDER"><option value="1">Male</option><option value="0">Female</option></select></div>
+      </div>
+      <div class="section-lbl">Lifestyle</div>
+      <div class="grid2">
+        <div class="field"><label>Smoking</label><select id="SMOKING"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Alcohol</label><select id="ALCOHOL_CONSUMING"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Peer Pressure</label><select id="PEER_PRESSURE"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Anxiety</label><select id="ANXIETY"><option value="1">No</option><option value="2">Yes</option></select></div>
+      </div>
+      <div class="section-lbl">Symptoms</div>
+      <div class="grid2">
+        <div class="field"><label>Yellow Fingers</label><select id="YELLOW_FINGERS"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Chronic Disease</label><select id="CHRONIC_DISEASE"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Fatigue</label><select id="FATIGUE"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Wheezing</label><select id="WHEEZING"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Coughing</label><select id="COUGHING"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Shortness of Breath</label><select id="SHORTNESS_OF_BREATH"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Chest Pain</label><select id="CHEST_PAIN"><option value="1">No</option><option value="2">Yes</option></select></div>
+        <div class="field"><label>Swallowing Difficulty</label><select id="SWALLOWING_DIFFICULTY"><option value="1">No</option><option value="2">Yes</option></select></div>
+      </div>
+      <button class="predict-btn" onclick="runPredict()"> Run AI Prediction</button>
+    </div>
+
+    <div class="result-panel">
+      <div class="card">
+        <h2> Results</h2>
+        <div id="r-empty" class="empty-state">Fill the form and click<br/><strong>Run AI Prediction</strong><br/>to see results here.</div>
+        <div id="r-loading" class="spin"><div class="spin-ring"></div><p style="color:#64748b;font-size:0.85rem;">Analysing…</p></div>
+        <div id="r-results" style="display:none">
+          <div class="mblock" id="lr-block">
+            <div class="mtop"><span class="mname"> Logistic Regression</span><span class="pill" id="lr-pill"></span></div>
+            <div class="plbl"><span>Risk probability</span><span id="lr-pct"></span></div>
+            <div class="prog"><div class="prog-fill" id="lr-bar" style="width:0%"></div></div>
+          </div>
+          <div class="mblock" id="dt-block">
+            <div class="mtop"><span class="mname"> Decision Tree</span><span class="pill" id="dt-pill"></span></div>
+            <div class="plbl"><span>Risk probability</span><span id="dt-pct"></span></div>
+            <div class="prog"><div class="prog-fill" id="dt-bar" style="width:0%"></div></div>
+          </div>
+          <div class="consensus" id="consensus"></div>
+          <div class="note"> For educational purposes only. Not a medical diagnosis. Always consult a doctor.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FIELDS = ['AGE','GENDER','SMOKING','YELLOW_FINGERS','ANXIETY','PEER_PRESSURE',
+  'CHRONIC_DISEASE','FATIGUE','ALLERGY','WHEEZING','ALCOHOL_CONSUMING','COUGHING',
+  'SHORTNESS_OF_BREATH','SWALLOWING_DIFFICULTY','CHEST_PAIN'];
+
+async function runPredict() {
+  document.getElementById('r-empty').style.display = 'none';
+  document.getElementById('r-results').style.display = 'none';
+  document.getElementById('r-loading').style.display = 'block';
+
+  const data = {};
+  FIELDS.forEach(f => {
+    const el = document.getElementById(f);
+    data[f] = el ? parseFloat(el.value) : 1;
+  });
+  // Fill any missing fields with 1
+  if (!data['ALLERGY']) data['ALLERGY'] = 1;
+
+  try {
+    const res = await fetch('/api/predict/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    const d = await res.json();
+
+    document.getElementById('r-loading').style.display = 'none';
+    document.getElementById('r-results').style.display = 'block';
+
+    setModel('lr', d.lr.label === 'HIGH RISK', d.lr.prob);
+    setModel('dt', d.dt.label === 'HIGH RISK', d.dt.prob);
+
+    const box = document.getElementById('consensus');
+    const high = d.consensus === 'HIGH RISK';
+    box.className = 'consensus ' + (high ? 'high' : 'low');
+    box.textContent = '⚡ Overall: ' + d.consensus;
+  } catch(e) {
+    alert('Error: ' + e.message);
+    document.getElementById('r-loading').style.display = 'none';
+  }
+}
+
+function setModel(id, isHigh, prob) {
+  const c = isHigh ? 'high' : 'low';
+  document.getElementById(id+'-block').className = 'mblock ' + c;
+  const pill = document.getElementById(id+'-pill');
+  pill.className = 'pill ' + c;
+  pill.textContent = isHigh ? 'HIGH RISK' : 'LOW RISK';
+  document.getElementById(id+'-pct').textContent = prob + '%';
+  const bar = document.getElementById(id+'-bar');
+  bar.className = 'prog-fill ' + c;
+  setTimeout(() => bar.style.width = prob + '%', 50);
+}
+</script>
+{% endblock %}

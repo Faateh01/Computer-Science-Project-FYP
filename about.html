@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}LungAI – About{% endblock %}
+
+{% block style %}
+<style>
+  .layout { display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; margin-top: 1.25rem; }
+  .tl { list-style: none; }
+  .tl li { border-left: 2px solid #2563eb; padding: 0.75rem 1rem; margin-left: 1rem; margin-bottom: 0.5rem; background: #f8fafc; border-radius: 0 8px 8px 0; position: relative; }
+  .tl li::before { content: ''; width: 10px; height: 10px; background: #2563eb; border-radius: 50%; position: absolute; left: -6px; top: 1rem; }
+  .tl li strong { display: block; font-size: 0.85rem; margin-bottom: 0.2rem; }
+  .tl li span { color: #64748b; font-size: 0.8rem; }
+  .srow { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.875rem; }
+  .srow:last-child { border: none; }
+  .srow span:last-child { font-weight: 700; color: #1e3a8a; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .tag { background: #eff6ff; color: #1e3a8a; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:0.25rem;"> About This Project</h1>
+  <p style="color:#64748b;font-size:0.875rem;">Module 6WCM0029 — Computer Science Final Year Project</p>
+
+  <div class="layout">
+    <div>
+      <div class="card">
+        <h2> What This Project Does</h2>
+        <p style="font-size:0.875rem;color:#475569;line-height:1.7">This project builds an AI system that predicts lung disease risk from patient health data. Two ML models — Logistic Regression and Decision Tree — are trained on a Kaggle dataset and integrated into a Django web app.</p>
+        <p style="font-size:0.875rem;color:#475569;margin-top:0.6rem">The user enters 15 health features (age, smoking, symptoms etc.) and the system gives a risk label — HIGH RISK or LOW RISK — with probability scores from each model.</p>
+      </div>
+
+      <div class="card">
+        <h2> How It Was Built — Step by Step</h2>
+        <ul class="tl">
+          <li><strong>Step 1: Dataset</strong><span>Lung Cancer Survey dataset from Kaggle — 1,000 records, 15 features.</span></li>
+          <li><strong>Step 2: Preprocessing</strong><span>Cleaned data, encoded labels, applied StandardScaler, 80/20 train-test split.</span></li>
+          <li><strong>Step 3: Train Models</strong><span>Trained Logistic Regression and Decision Tree using Python and Scikit-learn.</span></li>
+          <li><strong>Step 4: Evaluate</strong><span>Measured accuracy, precision, recall, F1, and 5-fold cross-validation.</span></li>
+          <li><strong>Step 5: Save Models</strong><span>Saved as .pkl files with Joblib so Django can load them at startup.</span></li>
+          <li><strong>Step 6: Web App</strong><span>User enters data → Django calls model → result displayed on screen.</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>⚖️ Ethics</h2>
+        <p style="font-size:0.875rem;color:#475569;line-height:1.7">Only public, anonymised datasets used. No patient data stored. This is a decision-support tool, not a replacement for medical professionals. Follows BCS Code of Conduct principles.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2> Project Info</h2>
+        <div class="srow"><span>Module</span><span>6WCM0029</span></div>
+        <div class="srow"><span>Dataset</span><span>Kaggle</span></div>
+        <div class="srow"><span>Records</span><span>1,000</span></div>
+        <div class="srow"><span>Features</span><span>15</span></div>
+        <div class="srow"><span>Test Split</span><span>20%</span></div>
+        <div class="srow"><span>Best Model</span><span>LR — 98%</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Tech Stack</h2>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">Joblib</span>
+          <span class="tag">Django</span>
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+      </div>
+
+      <div class="card" style="background:#1e3a8a;border-color:#1e3a8a">
+        <h2 style="color:rgba(255,255,255,0.7)">Try It</h2>
+        <p style="font-size:0.85rem;color:rgba(255,255,255,0.8);margin-bottom:1rem;line-height:1.6">Enter patient details and get instant predictions from both AI models.</p>
+        <a href="/predict/" style="display:block;text-align:center;padding:0.75rem;background:white;color:#1e3a8a;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none">Go to Prediction →</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
