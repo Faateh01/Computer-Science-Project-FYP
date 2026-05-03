@@ -9,9 +9,9 @@ The landing page. Shows the project title, key stats (96% LR accuracy, 89% DT ac
 2. Predict Page (/predict/)
 The main page. Has a form split into three sections:
 
-Patient Demographics — Age and Gender
-Lifestyle — Smoking, Alcohol, Peer Pressure, Anxiety
-Symptoms — Yellow Fingers, Chronic Disease, Fatigue, Wheezing, Coughing, Shortness of Breath, Chest Pain, Swallowing Difficulty
+Patient Demographics: Age and Gender
+Lifestyle:  Smoking, Alcohol, Peer Pressure, Anxiety
+Symptoms:  Yellow Fingers, Chronic Disease, Fatigue, Wheezing, Coughing, Shortness of Breath, Chest Pain, Swallowing Difficulty
 
 When you click Run AI Prediction, JavaScript sends the data to the server without refreshing the page. The results panel on the right instantly shows:
 
@@ -21,7 +21,7 @@ Overall consensus verdict (HIGH RISK if either model flags it)
 An ethical disclaimer reminding users it's not a medical diagnosis
 
 3. Results Page (/results/)
-Shows the full performance evaluation of both models with metric bars, numbers, and colour-coded confusion matrices so you can see exactly how reliable each model is.
+Shows the full performance evaluation of both models with metric bars, numbers and colour-coded confusion matrices so you can see exactly how reliable each model is.
 4. About Page (/about/)
 Explains what the project does, how it was built step by step, the tech stack used, and project info (module, dataset, records, features).
 
@@ -33,4 +33,4 @@ Django receives the data and puts it into the correct feature order
 The input is scaled and fed into Logistic Regression → returns label + probability
 The unscaled input is fed into Decision Tree → returns label + probability
 If either model says HIGH RISK, the consensus is HIGH RISK
-All results are sent back as JSON and the page updates instantly — no reload
+All results are sent back as JSON and the page updates instantly  no reload
