@@ -1,6 +1,5 @@
 # Computer-Science-Project-FYP
 
-What is LungAI?
 LungAI is a web-based AI system that predicts whether a patient is at HIGH RISK or LOW RISK of lung cancer based on 15 health and lifestyle features they enter through a form. It runs two machine learning models simultaneously and shows both results side by side with confidence percentages.
 
 The 4 Pages
